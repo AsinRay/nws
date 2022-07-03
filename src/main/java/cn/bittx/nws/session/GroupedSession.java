@@ -16,8 +16,6 @@ import java.util.concurrent.ConcurrentMap;
 public class GroupedSession {
     private static final ConcurrentMap<String, ChannelGroup> groupChannels = PlatformDependent.newConcurrentHashMap();
 
-
-
     /**
      *
      * @param group     must be validated.
@@ -62,3 +60,9 @@ public class GroupedSession {
         return rtn;
     }
 }
+
+
+// https://cloud.tencent.com/developer/article/1940758
+// https://cloud.tencent.com/developer/article/1919324?from=article.detail.1940758
+// https://cloud.tencent.com/developer/article/1944495?from=article.detail.1940758
+// https://cloud.tencent.com/developer/article/1347289?from=article.detail.1940758

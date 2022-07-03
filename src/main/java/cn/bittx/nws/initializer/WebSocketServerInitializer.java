@@ -52,8 +52,8 @@ public class WebSocketServerInitializer extends ChannelInitializer<SocketChannel
         if (sslCtx != null) {
             pipeline.addLast(sslCtx.newHandler(ch.alloc()));
         }
-        pipeline.addLast(new ReadTimeoutHandler(60, TimeUnit.SECONDS));
-        pipeline.addLast(new WriteTimeoutHandler(60,TimeUnit.SECONDS));
+        pipeline.addLast(new ReadTimeoutHandler(600, TimeUnit.SECONDS));
+        pipeline.addLast(new WriteTimeoutHandler(600,TimeUnit.SECONDS));
         pipeline.addLast(new HttpServerCodec());    // HttpRequest
         pipeline.addLast(new HttpObjectAggregator(65536));  // FullHttpRequest
         pipeline.addLast(new WebSocketServerCompressionHandler());

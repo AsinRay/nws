@@ -66,6 +66,11 @@ public class WebSocketIndexPageHandler extends SimpleChannelInboundHandler<FullH
             return;
         }
 
+        if ("/favicon.ico".equals(req.uri())){
+            System.out.println("fav channel id is:" + ctx.channel().id().asLongText());
+            return;
+        }
+
         // Send the index page
         if ("/".equals(req.uri()) || "/index.html".equals(req.uri())) {
             String webSocketLocation = getWebSocketLocation(ctx.pipeline(), req, websocketPath);
