@@ -16,6 +16,7 @@
 package cn.bittx.nws;
 
 import cn.bittx.nws.initializer.WebSocketServerInitializer;
+import cn.bittx.nws.schedule.RefreshableDataProvider;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -34,17 +35,6 @@ import io.netty.handler.ssl.util.SelfSignedCertificate;
  *
  * Open your browser at <a href="http://localhost:8080/">http://localhost:8080/</a>, then the demo page will be loaded
  * and a Web Socket connection will be made automatically.
- *
- * This server illustrates support for the different web socket specification versions and will work with:
- *
- * <ul>
- * <li>Safari 5+ (draft-ietf-hybi-thewebsocketprotocol-00)
- * <li>Chrome 6-13 (draft-ietf-hybi-thewebsocketprotocol-00)
- * <li>Chrome 14+ (draft-ietf-hybi-thewebsocketprotocol-10)
- * <li>Chrome 16+ (RFC 6455 aka draft-ietf-hybi-thewebsocketprotocol-17)
- * <li>Firefox 7+ (draft-ietf-hybi-thewebsocketprotocol-10)
- * <li>Firefox 11+ (RFC 6455 aka draft-ietf-hybi-thewebsocketprotocol-17)
- * </ul>
  */
 public final class WebSocketServer {
 
@@ -72,6 +62,8 @@ public final class WebSocketServer {
 
             Channel ch = b.bind(PORT).sync().channel();
 
+            launchSchedule();
+
             System.out.println("Open your web browser and navigate to " +
                     (SSL? "https" : "http") + "://127.0.0.1:" + PORT + '/');
 
@@ -80,5 +72,14 @@ public final class WebSocketServer {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+    }
+
+    private static void launchSchedule(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                RefreshableDataProvider.refreshForAnHour();
+            }
+        }).start();
     }
 }

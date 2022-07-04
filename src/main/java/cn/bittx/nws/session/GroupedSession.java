@@ -1,16 +1,16 @@
 package cn.bittx.nws.session;
 
 
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
-import io.netty.util.CharsetUtil;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import io.netty.util.internal.PlatformDependent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 
 public class GroupedSession {
@@ -40,11 +40,15 @@ public class GroupedSession {
      * @param group         must be validated.
      * @param message
      */
-    public static void send(String group,String message){
+    public static void push(String group, String message){
         ChannelGroup cg = groupChannels.get(group);
         if(cg != null){
-            cg.write(Unpooled.copiedBuffer(message, CharsetUtil.UTF_8));
+            cg.writeAndFlush(new TextWebSocketFrame(message));
         }
+    }
+
+    public static Set<String> getGroupNames(){
+        return groupChannels.keySet();
     }
 
     public static int getGroupSize(){
